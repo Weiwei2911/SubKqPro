@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.MackqdataMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.Mackqdata">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="mac_name" jdbcType="VARCHAR" property="macName" />
+    <result column="kq_num" jdbcType="INTEGER" property="kqNum" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="work_time" jdbcType="TIMESTAMP" property="workTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="work_note" jdbcType="INTEGER" property="workNote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    data_id, mac_name, kq_num, emp_name, work_time, end_time, work_note
+  </sql>
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.MackqdataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mac_kqdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mac_kqdata
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mac_kqdata
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.MackqdataExample">
+    delete from mac_kqdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.Mackqdata">
+    insert into mac_kqdata (data_id, mac_name, kq_num, 
+      emp_name, work_time, end_time, 
+      work_note)
+    values (#{dataId,jdbcType=INTEGER}, #{macName,jdbcType=VARCHAR}, #{kqNum,jdbcType=INTEGER}, 
+      #{empName,jdbcType=VARCHAR}, #{workTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{workNote,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.Mackqdata">
+    insert into mac_kqdata
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">
+        data_id,
+      </if>
+      <if test="macName != null">
+        mac_name,
+      </if>
+      <if test="kqNum != null">
+        kq_num,
+      </if>
+      <if test="empName != null">
+        emp_name,
+      </if>
+      <if test="workTime != null">
+        work_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="workNote != null">
+        work_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">
+        #{dataId,jdbcType=INTEGER},
+      </if>
+      <if test="macName != null">
+        #{macName,jdbcType=VARCHAR},
+      </if>
+      <if test="kqNum != null">
+        #{kqNum,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null">
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null">
+        #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workNote != null">
+        #{workNote,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.MackqdataExample" resultType="java.lang.Long">
+    select count(*) from mac_kqdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mac_kqdata
+    <set>
+      <if test="record.dataId != null">
+        data_id = #{record.dataId,jdbcType=INTEGER},
+      </if>
+      <if test="record.macName != null">
+        mac_name = #{record.macName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kqNum != null">
+        kq_num = #{record.kqNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.empName != null">
+        emp_name = #{record.empName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workTime != null">
+        work_time = #{record.workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.workNote != null">
+        work_note = #{record.workNote,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mac_kqdata
+    set data_id = #{record.dataId,jdbcType=INTEGER},
+      mac_name = #{record.macName,jdbcType=VARCHAR},
+      kq_num = #{record.kqNum,jdbcType=INTEGER},
+      emp_name = #{record.empName,jdbcType=VARCHAR},
+      work_time = #{record.workTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      work_note = #{record.workNote,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.Mackqdata">
+    update mac_kqdata
+    <set>
+      <if test="macName != null">
+        mac_name = #{macName,jdbcType=VARCHAR},
+      </if>
+      <if test="kqNum != null">
+        kq_num = #{kqNum,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null">
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null">
+        work_time = #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workNote != null">
+        work_note = #{workNote,jdbcType=INTEGER},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.Mackqdata">
+    update mac_kqdata
+    set mac_name = #{macName,jdbcType=VARCHAR},
+      kq_num = #{kqNum,jdbcType=INTEGER},
+      emp_name = #{empName,jdbcType=VARCHAR},
+      work_time = #{workTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      work_note = #{workNote,jdbcType=INTEGER}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+</mapper>

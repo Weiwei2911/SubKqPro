@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.MachineinfoMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.Machineinfo">
+    <id column="Mac_id" jdbcType="INTEGER" property="macId" />
+    <result column="Mac_name" jdbcType="VARCHAR" property="macName" />
+    <result column="Mac_ip" jdbcType="VARCHAR" property="macIp" />
+    <result column="Mac_port" jdbcType="VARCHAR" property="macPort" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Mac_id, Mac_name, Mac_ip, Mac_port
+  </sql>
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.MachineinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mac_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mac_info
+    where Mac_id = #{macId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mac_info
+    where Mac_id = #{macId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.MachineinfoExample">
+    delete from mac_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.Machineinfo">
+    insert into mac_info (Mac_id, Mac_name, Mac_ip, 
+      Mac_port)
+    values (#{macId,jdbcType=INTEGER}, #{macName,jdbcType=VARCHAR}, #{macIp,jdbcType=VARCHAR}, 
+      #{macPort,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.Machineinfo">
+    insert into mac_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="macId != null">
+        Mac_id,
+      </if>
+      <if test="macName != null">
+        Mac_name,
+      </if>
+      <if test="macIp != null">
+        Mac_ip,
+      </if>
+      <if test="macPort != null">
+        Mac_port,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="macId != null">
+        #{macId,jdbcType=INTEGER},
+      </if>
+      <if test="macName != null">
+        #{macName,jdbcType=VARCHAR},
+      </if>
+      <if test="macIp != null">
+        #{macIp,jdbcType=VARCHAR},
+      </if>
+      <if test="macPort != null">
+        #{macPort,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.MachineinfoExample" resultType="java.lang.Long">
+    select count(*) from mac_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mac_info
+    <set>
+      <if test="record.macId != null">
+        Mac_id = #{record.macId,jdbcType=INTEGER},
+      </if>
+      <if test="record.macName != null">
+        Mac_name = #{record.macName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.macIp != null">
+        Mac_ip = #{record.macIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.macPort != null">
+        Mac_port = #{record.macPort,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mac_info
+    set Mac_id = #{record.macId,jdbcType=INTEGER},
+      Mac_name = #{record.macName,jdbcType=VARCHAR},
+      Mac_ip = #{record.macIp,jdbcType=VARCHAR},
+      Mac_port = #{record.macPort,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.Machineinfo">
+    update mac_info
+    <set>
+      <if test="macName != null">
+        Mac_name = #{macName,jdbcType=VARCHAR},
+      </if>
+      <if test="macIp != null">
+        Mac_ip = #{macIp,jdbcType=VARCHAR},
+      </if>
+      <if test="macPort != null">
+        Mac_port = #{macPort,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Mac_id = #{macId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.Machineinfo">
+    update mac_info
+    set Mac_name = #{macName,jdbcType=VARCHAR},
+      Mac_ip = #{macIp,jdbcType=VARCHAR},
+      Mac_port = #{macPort,jdbcType=VARCHAR}
+    where Mac_id = #{macId,jdbcType=INTEGER}
+  </update>
+</mapper>

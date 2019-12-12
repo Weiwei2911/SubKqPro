@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.SetScheMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.SetSche">
+    <id column="ClassId" jdbcType="INTEGER" property="classid" />
+    <result column="WorkClass" jdbcType="VARCHAR" property="workclass" />
+    <result column="StartTime" jdbcType="VARCHAR" property="starttime" />
+    <result column="EndTime" jdbcType="VARCHAR" property="endtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ClassId, WorkClass, StartTime, EndTime
+  </sql>
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.SetScheExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from set_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from set_schedule
+    where ClassId = #{classid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from set_schedule
+    where ClassId = #{classid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.SetScheExample">
+    delete from set_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.SetSche">
+    insert into set_schedule (ClassId, WorkClass, StartTime, 
+      EndTime)
+    values (#{classid,jdbcType=INTEGER}, #{workclass,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, 
+      #{endtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.SetSche">
+    insert into set_schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classid != null">
+        ClassId,
+      </if>
+      <if test="workclass != null">
+        WorkClass,
+      </if>
+      <if test="starttime != null">
+        StartTime,
+      </if>
+      <if test="endtime != null">
+        EndTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classid != null">
+        #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="workclass != null">
+        #{workclass,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.SetScheExample" resultType="java.lang.Long">
+    select count(*) from set_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update set_schedule
+    <set>
+      <if test="record.classid != null">
+        ClassId = #{record.classid,jdbcType=INTEGER},
+      </if>
+      <if test="record.workclass != null">
+        WorkClass = #{record.workclass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.starttime != null">
+        StartTime = #{record.starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endtime != null">
+        EndTime = #{record.endtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update set_schedule
+    set ClassId = #{record.classid,jdbcType=INTEGER},
+      WorkClass = #{record.workclass,jdbcType=VARCHAR},
+      StartTime = #{record.starttime,jdbcType=VARCHAR},
+      EndTime = #{record.endtime,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.SetSche">
+    update set_schedule
+    <set>
+      <if test="workclass != null">
+        WorkClass = #{workclass,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        StartTime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        EndTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ClassId = #{classid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.SetSche">
+    update set_schedule
+    set WorkClass = #{workclass,jdbcType=VARCHAR},
+      StartTime = #{starttime,jdbcType=VARCHAR},
+      EndTime = #{endtime,jdbcType=VARCHAR}
+    where ClassId = #{classid,jdbcType=INTEGER}
+  </update>
+</mapper>

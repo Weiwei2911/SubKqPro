@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.Schedule">
+    <id column="Enrollnumber" jdbcType="VARCHAR" property="enrollnumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="WorkClass" jdbcType="VARCHAR" property="workclass" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Enrollnumber, name, WorkClass
+  </sql>
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.ScheduleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bus_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_schedule
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_schedule
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.ScheduleExample">
+    delete from bus_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.Schedule">
+    insert into bus_schedule (Enrollnumber, name, WorkClass
+      )
+    values (#{enrollnumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{workclass,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.Schedule">
+    insert into bus_schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enrollnumber != null">
+        Enrollnumber,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="workclass != null">
+        WorkClass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enrollnumber != null">
+        #{enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="workclass != null">
+        #{workclass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.ScheduleExample" resultType="java.lang.Long">
+    select count(*) from bus_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bus_schedule
+    <set>
+      <if test="record.enrollnumber != null">
+        Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workclass != null">
+        WorkClass = #{record.workclass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bus_schedule
+    set Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      WorkClass = #{record.workclass,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.Schedule">
+    update bus_schedule
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="workclass != null">
+        WorkClass = #{workclass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.Schedule">
+    update bus_schedule
+    set name = #{name,jdbcType=VARCHAR},
+      WorkClass = #{workclass,jdbcType=VARCHAR}
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByUserInfo" parameterType="com.bnuz.kq.bean.Schedule">
+    INSERT IGNORE INTO bus_schedule (EnrollNumber, `name`)(
+	SELECT
+		EnrollNumber,
+		`name`
+	FROM
+		userinfo
+)
+  </update>
+  
+</mapper>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.AllkqinfoMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.Allkqinfo">
+    <id column="Info_id" jdbcType="INTEGER" property="infoId" />
+    <result column="Enrollnumber" jdbcType="VARCHAR" property="enrollnumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="Time" jdbcType="VARCHAR" property="time" />
+    <result column="Hour" jdbcType="VARCHAR" property="hour" />
+    <result column="StartTime" jdbcType="VARCHAR" property="starttime" />
+    <result column="EndTime" jdbcType="VARCHAR" property="endtime" />
+    <result column="InOutMode" jdbcType="VARCHAR" property="inoutmode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Info_id, Enrollnumber, name, Time, Hour, StartTime, EndTime, InOutMode
+  </sql>
+  
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.AllkqinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from all_kqinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+   <!-- 查出判断所有打卡状态信息 -->
+  <select id="selectByExampleJudgemode" parameterType="com.bnuz.kq.bean.KqInfolist"  resultMap="BaseResultMap">
+     SELECT
+	bs.Enrollnumber,
+	bs.`name`,
+	ak.Time,
+	ak.`Hour`,
+	ss.StartTime,
+	ss.EndTime,
+	ak.InOutMode
+FROM
+	all_kqdata ak
+LEFT JOIN bus_schedule bs ON ak.EnrollNumber = bs.Enrollnumber <!-- 根据对应工号返回名字 -->
+LEFT JOIN set_schedule ss ON bs.WorkClass = ss.WorkClass <!-- 根据排班表返回对应班开始以及结束时间 -->
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from all_kqinfo
+    where Info_id = #{infoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from all_kqinfo
+    where Info_id = #{infoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.AllkqinfoExample">
+    delete from all_kqinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.Allkqinfo">
+    insert into all_kqinfo (Info_id, Enrollnumber, name, 
+      Time, Hour, StartTime, 
+      EndTime, InOutMode)
+    values (#{infoId,jdbcType=INTEGER}, #{enrollnumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{hour,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, 
+      #{endtime,jdbcType=VARCHAR}, #{inoutmode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.Allkqinfo">
+    insert into all_kqinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="infoId != null">
+        Info_id,
+      </if>
+      <if test="enrollnumber != null">
+        Enrollnumber,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="time != null">
+        Time,
+      </if>
+      <if test="hour != null">
+        Hour,
+      </if>
+      <if test="starttime != null">
+        StartTime,
+      </if>
+      <if test="endtime != null">
+        EndTime,
+      </if>
+      <if test="inoutmode != null">
+        InOutMode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="infoId != null">
+        #{infoId,jdbcType=INTEGER},
+      </if>
+      <if test="enrollnumber != null">
+        #{enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null">
+        #{hour,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="inoutmode != null">
+        #{inoutmode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.AllkqinfoExample" resultType="java.lang.Long">
+    select count(*) from all_kqinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update all_kqinfo
+    <set>
+      <if test="record.infoId != null">
+        Info_id = #{record.infoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.enrollnumber != null">
+        Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        Time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hour != null">
+        Hour = #{record.hour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.starttime != null">
+        StartTime = #{record.starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endtime != null">
+        EndTime = #{record.endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inoutmode != null">
+        InOutMode = #{record.inoutmode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update all_kqinfo
+    set Info_id = #{record.infoId,jdbcType=INTEGER},
+      Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      Time = #{record.time,jdbcType=VARCHAR},
+      Hour = #{record.hour,jdbcType=VARCHAR},
+      StartTime = #{record.starttime,jdbcType=VARCHAR},
+      EndTime = #{record.endtime,jdbcType=VARCHAR},
+      InOutMode = #{record.inoutmode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.Allkqinfo">
+    update all_kqinfo
+    <set>
+      <if test="enrollnumber != null">
+        Enrollnumber = #{enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        Time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null">
+        Hour = #{hour,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        StartTime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        EndTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="inoutmode != null">
+        InOutMode = #{inoutmode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Info_id = #{infoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.Allkqinfo">
+    update all_kqinfo
+    set Enrollnumber = #{enrollnumber,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      Time = #{time,jdbcType=VARCHAR},
+      Hour = #{hour,jdbcType=VARCHAR},
+      StartTime = #{starttime,jdbcType=VARCHAR},
+      EndTime = #{endtime,jdbcType=VARCHAR},
+      InOutMode = #{inoutmode,jdbcType=VARCHAR}
+    where Info_id = #{infoId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 插入数据库 -->
+  <insert id="insertKqInfoMode" parameterType="java.util.List">
+  	insert ignore into All_kqinfo	
+  	(EnrollNumber,name,Time,Hour,StartTime,EndTime,InOutMode) 
+  	values
+  	<foreach item="kqlist" collection="Allkqinfo" separator=",">
+  	(
+  	  #{kqlist.enrollnumber},
+  	  #{kqlist.name},
+  	  #{kqlist.time},
+  	  #{kqlist.hour},
+  	  #{kqlist.starttime},
+  	  #{kqlist.endtime},
+  	  #{kqlist.inoutmode}
+  	  )
+  	</foreach>
+  </insert>
+</mapper>

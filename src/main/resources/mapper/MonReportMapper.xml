@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bnuz.kq.dao.MonReportMapper">
+  <resultMap id="BaseResultMap" type="com.bnuz.kq.bean.MonReport">
+    <id column="Enrollnumber" jdbcType="VARCHAR" property="enrollnumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="true_num" jdbcType="INTEGER" property="trueNum" />
+    <result column="bad_num" jdbcType="INTEGER" property="badNum" />
+    <result column="ot_hour" jdbcType="INTEGER" property="otHour" />
+    <result column="normal_wage" jdbcType="DOUBLE" property="normalWage" />
+    <result column="ded_wage" jdbcType="DOUBLE" property="dedWage" />
+    <result column="ot_wage" jdbcType="DOUBLE" property="otWage" />
+    <result column="last_wages" jdbcType="DOUBLE" property="lastWages" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Enrollnumber, name, true_num, bad_num, ot_hour, normal_wage, ded_wage, ot_wage, last_wages
+  </sql>
+  <select id="selectByExample" parameterType="com.bnuz.kq.bean.MonReportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mon_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mon_report
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mon_report
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bnuz.kq.bean.MonReportExample">
+    delete from mon_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bnuz.kq.bean.MonReport">
+    insert into mon_report (Enrollnumber, name, true_num, 
+      bad_num, ot_hour, normal_wage, 
+      ded_wage, ot_wage, last_wages
+      )
+    values (#{enrollnumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{trueNum,jdbcType=INTEGER}, 
+      #{badNum,jdbcType=INTEGER}, #{otHour,jdbcType=INTEGER}, #{normalWage,jdbcType=DOUBLE}, 
+      #{dedWage,jdbcType=DOUBLE}, #{otWage,jdbcType=DOUBLE}, #{lastWages,jdbcType=DOUBLE}
+      )
+  </insert>
+  
+  <insert id="insertbyuseinfo" parameterType="com.bnuz.kq.bean.MonReport">
+     INSERT ignore into mon_report
+	(EnrollNumber,name)
+	SELECT EnrollNumber,name
+	FROM userinfo    
+  </insert>
+  
+  <!-- <insert id="insertReport" parameterType="java.util.List">
+  	insert  into mon_report	
+  	(EnrollNumber,name,true_num,bad_num) 
+  	values
+  	<foreach item="reportlist" collection="MonReport" separator=",">
+  	(
+  	  #{reportlist.enrollnumber},
+  	  #{reportlist.name},
+  	  #{reportlist.trueNum},
+  	  #{reportlist.badNum}
+  	  )
+  	</foreach>
+  	where not exists(select*from mon_report
+  	where mon_report.true_num = reportlist.trueNum)
+  </insert> -->
+  
+  <insert id="insertSelective" parameterType="com.bnuz.kq.bean.MonReport">
+    insert into mon_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enrollnumber != null">
+        Enrollnumber,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="trueNum != null">
+        true_num,
+      </if>
+      <if test="badNum != null">
+        bad_num,
+      </if>
+      <if test="otHour != null">
+        ot_hour,
+      </if>
+      <if test="normalWage != null">
+        normal_wage,
+      </if>
+      <if test="dedWage != null">
+        ded_wage,
+      </if>
+      <if test="otWage != null">
+        ot_wage,
+      </if>
+      <if test="lastWages != null">
+        last_wages,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enrollnumber != null">
+        #{enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="trueNum != null">
+        #{trueNum,jdbcType=INTEGER},
+      </if>
+      <if test="badNum != null">
+        #{badNum,jdbcType=INTEGER},
+      </if>
+      <if test="otHour != null">
+        #{otHour,jdbcType=INTEGER},
+      </if>
+      <if test="normalWage != null">
+        #{normalWage,jdbcType=DOUBLE},
+      </if>
+      <if test="dedWage != null">
+        #{dedWage,jdbcType=DOUBLE},
+      </if>
+      <if test="otWage != null">
+        #{otWage,jdbcType=DOUBLE},
+      </if>
+      <if test="lastWages != null">
+        #{lastWages,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bnuz.kq.bean.MonReportExample" resultType="java.lang.Long">
+    select count(*) from mon_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mon_report
+    <set>
+      <if test="record.enrollnumber != null">
+        Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trueNum != null">
+        true_num = #{record.trueNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.badNum != null">
+        bad_num = #{record.badNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.otHour != null">
+        ot_hour = #{record.otHour,jdbcType=INTEGER},
+      </if>
+      <if test="record.normalWage != null">
+        normal_wage = #{record.normalWage,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dedWage != null">
+        ded_wage = #{record.dedWage,jdbcType=DOUBLE},
+      </if>
+      <if test="record.otWage != null">
+        ot_wage = #{record.otWage,jdbcType=DOUBLE},
+      </if>
+      <if test="record.lastWages != null">
+        last_wages = #{record.lastWages,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mon_report
+    set Enrollnumber = #{record.enrollnumber,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      true_num = #{record.trueNum,jdbcType=INTEGER},
+      bad_num = #{record.badNum,jdbcType=INTEGER},
+      ot_hour = #{record.otHour,jdbcType=INTEGER},
+      normal_wage = #{record.normalWage,jdbcType=DOUBLE},
+      ded_wage = #{record.dedWage,jdbcType=DOUBLE},
+      ot_wage = #{record.otWage,jdbcType=DOUBLE},
+      last_wages = #{record.lastWages,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bnuz.kq.bean.MonReport">
+    update mon_report
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="trueNum != null">
+        true_num = #{trueNum,jdbcType=INTEGER},
+      </if>
+      <if test="badNum != null">
+        bad_num = #{badNum,jdbcType=INTEGER},
+      </if>
+      <if test="otHour != null">
+        ot_hour = #{otHour,jdbcType=INTEGER},
+      </if>
+      <if test="normalWage != null">
+        normal_wage = #{normalWage,jdbcType=DOUBLE},
+      </if>
+      <if test="dedWage != null">
+        ded_wage = #{dedWage,jdbcType=DOUBLE},
+      </if>
+      <if test="otWage != null">
+        ot_wage = #{otWage,jdbcType=DOUBLE},
+      </if>
+      <if test="lastWages != null">
+        last_wages = #{lastWages,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bnuz.kq.bean.MonReport">
+    update mon_report
+    set name = #{name,jdbcType=VARCHAR},
+      true_num = #{trueNum,jdbcType=INTEGER},
+      bad_num = #{badNum,jdbcType=INTEGER},
+      ot_hour = #{otHour,jdbcType=INTEGER},
+      normal_wage = #{normalWage,jdbcType=DOUBLE},
+      ded_wage = #{dedWage,jdbcType=DOUBLE},
+      ot_wage = #{otWage,jdbcType=DOUBLE},
+      last_wages = #{lastWages,jdbcType=DOUBLE}
+    where Enrollnumber = #{enrollnumber,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateReport" parameterType="java.util.List">
+  	<foreach item="reportlist" collection="MonReport" separator=",">
+  	 update mon_report set
+  	  ture_num=#{reportlist.trueNum},
+  	  bad_num=#{reportlist.badNum}
+  	  
+  	</foreach>
+  </update>
+</mapper>
